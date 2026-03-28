@@ -39,6 +39,7 @@ const AddNewImageForm: React.FC<AddNewImageFormProps> = ({
             const image = await response.json();
             console.log();
             const newImages = [...images, image];
+            event.target.reset();
             setImages(newImages);
           } catch (err) {
             console.error(err);
