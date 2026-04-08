@@ -1,15 +1,25 @@
 class ImagesController < ApplicationController
   def index
     @images = Image.all
-
-    render json: @images
+    images_data = @images.map do |image|
+      data = image.as_json
+      data["image_url"] = url_for(image.image) if image.image.attached?
+      data
+    end
+    render json: images_data
   end
 
   def show
     imageId = params[:id]
     @image = Image.find(imageId)
 
-    render json: @image
+    image_data = @image.as_json
+
+    if @image.image.attached?
+      image_data["image_url"] = url_for(@image.image)
+    end
+
+    render json: image_data
   end
 
   def create
@@ -45,6 +55,7 @@ class ImagesController < ApplicationController
   private
 
   def image_params
-    params.expect(image: [ :name, :description ])
+    logger.debug "\n\nParams sent from frontend: #{params.inspect}\n\n"
+    params.require(:image).permit(:name, :description, :image)
   end
 end

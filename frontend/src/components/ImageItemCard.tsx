@@ -21,6 +21,7 @@ const ImageItemCard: React.FC<ItemImageCard> = ({
     >
       <h2>{image.name}</h2>
       <p>{image.description}</p>
+      <img style={{ width: "300px" }} src={image.image_url} alt="" />
       <div
         style={{
           display: "flex",
