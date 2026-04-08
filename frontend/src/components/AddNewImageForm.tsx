@@ -16,20 +16,21 @@ const AddNewImageForm: React.FC<AddNewImageFormProps> = ({
         onSubmit={async (event) => {
           event.preventDefault();
           const formData = new FormData(event.currentTarget);
+          // const formData = new FormData();
           console.log(formData);
           console.log("event: ", event);
+          const image = formData.get("image");
+          console.log("image: ", image);
           const formValues = {
             name: formData.get("name"),
             description: formData.get("description"),
+            image,
           };
           console.log("formValues", formValues);
           try {
             const response = await fetch(API_BASE_URL, {
               method: "POST",
-              body: JSON.stringify(formValues),
-              headers: {
-                "Content-Type": "application/json",
-              },
+              body: formData,
             });
 
             if (!response.ok) {
@@ -55,12 +56,15 @@ const AddNewImageForm: React.FC<AddNewImageFormProps> = ({
       >
         <h2>Add new image</h2>
         <label htmlFor="name">Title</label>
-        <input type="text" name="name" id="name" />
+        <input type="text" name="image[name]" id="name" />
 
         <br />
 
         <label htmlFor="description">Description</label>
-        <textarea name="description" id="description" />
+        <textarea name="image[description]" id="description" />
+
+        <label htmlFor="image">Image</label>
+        <input type="file" name="image[image]" id="image" accept="image" />
 
         <br />
 
